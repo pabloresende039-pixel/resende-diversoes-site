@@ -123,39 +123,80 @@
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      padding: 80px 0;
-      background:
-        radial-gradient(circle at 85% 20%, rgba(14,165,233,.24) 0%, transparent 46%),
-        radial-gradient(circle at 12% 88%, rgba(244,63,94,.13) 0%, transparent 42%),
-        linear-gradient(165deg, #0F172A 0%, #1E293B 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
 
-    /* textura sutil pra não ficar um gradiente liso demais */
-    .hero::before {
+    /* ── HERO — PAINEL ESQUERDO ── */
+    .hero-left {
+      background: linear-gradient(160deg, #0F172A 0%, #152232 100%);
+      display: flex;
+      align-items: center;
+      padding: 100px 64px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* brilho azul sutil no canto inferior */
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; right: -60px;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(14,165,233,.18) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-left-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    /* ── HERO — PAINEL DIREITO (FOTO) ── */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* fade suave na borda esquerda pra integrar com o painel escuro */
+    .hero-right::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size: 24px 24px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .hero::after { display: none; }
-
-    .hero-inner {
-      position: relative;
+      background: linear-gradient(to right, rgba(15,23,42,.4) 0%, transparent 28%);
       z-index: 1;
-      display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 40px;
-      align-items: center;
+      pointer-events: none;
     }
 
-    .hero-content { max-width: 600px; }
+    /* badges flutuantes sobre a foto */
+    .hero-photo-badge {
+      position: absolute;
+      z-index: 2;
+      background: var(--white);
+      border-radius: 50px;
+      padding: 11px 20px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: .85rem;
+      color: var(--dark);
+      box-shadow: 0 6px 28px rgba(0,0,0,.22);
+      white-space: nowrap;
+    }
+
+    .hero-photo-badge.blue {
+      background: var(--blue);
+      color: var(--white);
+    }
 
     /* coluna esquerda */
     .hero-badge {
@@ -228,59 +269,6 @@
       color: rgba(255,255,255,.25);
     }
 
-    /* coluna direita — foto empilhada */
-    .hero-visual {
-      position: relative;
-      height: 520px;
-    }
-
-    .hv-card {
-      position: absolute;
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,.5);
-    }
-    .hv-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .hv-card-1 {
-      width: 300px; height: 360px;
-      top: 0; left: 20px;
-      transform: rotate(-4deg);
-      z-index: 1;
-    }
-    .hv-card-2 {
-      width: 260px; height: 300px;
-      top: 60px; right: 0;
-      transform: rotate(3deg);
-      z-index: 2;
-    }
-    .hv-card-3 {
-      width: 220px; height: 220px;
-      bottom: 0; left: 60px;
-      transform: rotate(2deg);
-      z-index: 3;
-    }
-
-    /* chip flutuante */
-    .hv-chip {
-      position: absolute;
-      background: var(--white);
-      border-radius: 50px;
-      padding: 10px 18px;
-      font-weight: 800;
-      font-size: .85rem;
-      color: var(--dark);
-      box-shadow: 0 6px 24px rgba(0,0,0,.2);
-      white-space: nowrap;
-      z-index: 10;
-    }
-    .hv-chip-1 { bottom: 20px; right: 10px; }
-    .hv-chip-2 {
-      top: 10px; right: 20px;
-      background: var(--red);
-      color: var(--white);
-    }
-    .hv-chip span { opacity: .7; font-weight: 600; }
 
     /* ── STATS BAR ── */
     .stats {
@@ -736,20 +724,20 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-visual { display: none; }
-      .hero { text-align: center; min-height: unset; padding: 70px 0 60px; }
-      .hero::before {
-        background: linear-gradient(
-          to bottom,
-          rgba(15,23,42,0.78) 0%,
-          rgba(15,23,42,0.68) 100%
-        );
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: 320px auto;
       }
+      .hero-right { order: -1; }
+      .hero-left {
+        padding: 52px 32px 60px;
+        text-align: center;
+      }
+      .hero-left-inner { max-width: 100%; }
       .hero-btns { justify-content: center; }
       .hero-tags { justify-content: center; }
       .hero-divider { margin: 20px auto; }
-      .hero h1 { font-size: clamp(2.4rem, 8vw, 3.2rem); }
+      .hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
     }
     @media (max-width: 768px) {
       nav { display: none; }
@@ -846,54 +834,48 @@
 
   <!-- Hero -->
   <section class="hero">
-    <div class="container">
-      <div class="hero-inner">
 
-        <!-- Esquerda -->
-        <div class="hero-content">
-          <div class="hero-badge">📍 Campo Grande, Cariacica — ES</div>
-          <h1>
-            A festa dos<br>
-            seus filhos<br>
-            começa <span class="red">com<br>a gente</span>
-          </h1>
-          <p class="hero-desc">
-            Pula pula, piscina de bolinhas, algodão doce e pipoca.
-            Entregamos, montamos e desmontamos — você só curte.
-          </p>
-          <div class="hero-btns">
-            <a href="https://wa.me/5527999948963?text=Ol%C3%A1%2C+gostaria+de+fazer+um+or%C3%A7amento!" class="btn btn-whatsapp" target="_blank" rel="noopener">
-              <svg width="20" height="20" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.737 5.47 2.027 7.774L0 32l8.456-2.007A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.773-1.854l-.487-.289-5.02 1.192 1.26-4.881-.32-.502A13.237 13.237 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.293-9.907c-.4-.2-2.366-1.167-2.733-1.3-.367-.133-.634-.2-.9.2-.267.4-1.033 1.3-1.267 1.567-.233.267-.467.3-.867.1-.4-.2-1.687-.622-3.213-1.98-1.187-1.06-1.988-2.368-2.22-2.768-.234-.4-.026-.616.174-.816.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.234-2.967-.326-.78-.654-.674-.9-.686-.233-.012-.5-.015-.767-.015s-.7.1-1.067.5c-.367.4-1.4 1.367-1.4 3.334 0 1.966 1.433 3.866 1.633 4.133.2.267 2.82 4.308 6.833 6.041.955.413 1.7.66 2.28.845.958.306 1.83.263 2.52.16.768-.115 2.366-.967 2.7-1.9.333-.933.333-1.733.233-1.9-.1-.167-.367-.267-.767-.467z"/></svg>
-              Fazer Orçamento Grátis
-            </a>
-            <a href="#servicos" class="btn btn-outline">Ver serviços</a>
-          </div>
-          <div class="hero-divider"></div>
-          <div class="hero-tags">
-            <span class="hero-tag">Vitória</span>
-            <span class="hero-tag">Vila Velha</span>
-            <span class="hero-tag">Cariacica</span>
-            <span class="hero-tag">Viana</span>
-          </div>
+    <!-- Painel esquerdo: texto -->
+    <div class="hero-left">
+      <div class="hero-left-inner">
+        <div class="hero-badge">📍 Campo Grande, Cariacica — ES</div>
+        <h1>
+          A festa dos<br>
+          seus filhos<br>
+          começa <span class="red">com<br>a gente</span>
+        </h1>
+        <p class="hero-desc">
+          Pula pula, piscina de bolinhas, algodão doce e pipoca.
+          Entregamos, montamos e desmontamos — você só curte.
+        </p>
+        <div class="hero-btns">
+          <a href="https://wa.me/5527999948963?text=Ol%C3%A1%2C+gostaria+de+fazer+um+or%C3%A7amento!" class="btn btn-whatsapp" target="_blank" rel="noopener">
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.82.737 5.47 2.027 7.774L0 32l8.456-2.007A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.773-1.854l-.487-.289-5.02 1.192 1.26-4.881-.32-.502A13.237 13.237 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.293-9.907c-.4-.2-2.366-1.167-2.733-1.3-.367-.133-.634-.2-.9.2-.267.4-1.033 1.3-1.267 1.567-.233.267-.467.3-.867.1-.4-.2-1.687-.622-3.213-1.98-1.187-1.06-1.988-2.368-2.22-2.768-.234-.4-.026-.616.174-.816.18-.18.4-.467.6-.7.2-.234.267-.4.4-.667.133-.267.067-.5-.033-.7-.1-.2-.9-2.167-1.234-2.967-.326-.78-.654-.674-.9-.686-.233-.012-.5-.015-.767-.015s-.7.1-1.067.5c-.367.4-1.4 1.367-1.4 3.334 0 1.966 1.433 3.866 1.633 4.133.2.267 2.82 4.308 6.833 6.041.955.413 1.7.66 2.28.845.958.306 1.83.263 2.52.16.768-.115 2.366-.967 2.7-1.9.333-.933.333-1.733.233-1.9-.1-.167-.367-.267-.767-.467z"/></svg>
+            Fazer Orçamento Grátis
+          </a>
+          <a href="#servicos" class="btn btn-outline">Ver serviços</a>
         </div>
-
-        <!-- Direita: fotos reais dos produtos -->
-        <div class="hero-visual">
-          <div class="hv-card hv-card-1">
-            <img src="fotos/pula-pula-370.jpeg" alt="Pula Pula 3,70m montado em festa" />
-          </div>
-          <div class="hv-card hv-card-2">
-            <img src="fotos/piscina-bolinhas-15.jpeg" alt="Piscina de Bolinhas" />
-          </div>
-          <div class="hv-card hv-card-3">
-            <img src="fotos/pipoca-algodao-doce.jpeg" alt="Pipoca e Algodão Doce" />
-          </div>
-          <div class="hv-chip hv-chip-1">🎈 6+ <span>produtos</span></div>
-          <div class="hv-chip hv-chip-2">📦 Entrega + montagem</div>
+        <div class="hero-divider"></div>
+        <div class="hero-tags">
+          <span class="hero-tag">Vitória</span>
+          <span class="hero-tag">Vila Velha</span>
+          <span class="hero-tag">Cariacica</span>
+          <span class="hero-tag">Viana</span>
         </div>
-
       </div>
     </div>
+
+    <!-- Painel direito: foto real do produto -->
+    <div class="hero-right">
+      <img src="fotos/pula-pula-305.jpeg" alt="Pula Pula montado em quintal" />
+      <div class="hero-photo-badge blue" style="top:32px; right:28px;">
+        6+ produtos disponíveis
+      </div>
+      <div class="hero-photo-badge" style="bottom:32px; left:28px;">
+        🚚 Entrega + montagem incluída
+      </div>
+    </div>
+
   </section>
 
   <!-- Stats bar -->
