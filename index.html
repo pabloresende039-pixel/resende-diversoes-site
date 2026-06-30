@@ -128,23 +128,19 @@
       position: relative;
       overflow: hidden;
       padding: 80px 0;
-      background-image: url('fotos/hero-bg.png');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(14,165,233,.24) 0%, transparent 46%),
+        radial-gradient(circle at 12% 88%, rgba(244,63,94,.13) 0%, transparent 42%),
+        linear-gradient(165deg, #0F172A 0%, #1E293B 100%);
     }
 
-    /* overlay escuro pra legibilidade */
+    /* textura sutil pra não ficar um gradiente liso demais */
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to right,
-        rgba(15,23,42,0.82) 0%,
-        rgba(15,23,42,0.65) 45%,
-        rgba(15,23,42,0.15) 100%
-      );
+      background-image: radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 24px 24px;
       pointer-events: none;
       z-index: 0;
     }
@@ -153,8 +149,13 @@
     .hero-inner {
       position: relative;
       z-index: 1;
-      max-width: 600px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 40px;
+      align-items: center;
     }
+
+    .hero-content { max-width: 600px; }
 
     /* coluna esquerda */
     .hero-badge {
@@ -279,6 +280,7 @@
       background: var(--red);
       color: var(--white);
     }
+    .hv-chip span { opacity: .7; font-weight: 600; }
 
     /* ── STATS BAR ── */
     .stats {
@@ -875,6 +877,20 @@
           </div>
         </div>
 
+        <!-- Direita: fotos reais dos produtos -->
+        <div class="hero-visual">
+          <div class="hv-card hv-card-1">
+            <img src="fotos/pula-pula-370.jpeg" alt="Pula Pula 3,70m montado em festa" />
+          </div>
+          <div class="hv-card hv-card-2">
+            <img src="fotos/piscina-bolinhas-15.jpeg" alt="Piscina de Bolinhas" />
+          </div>
+          <div class="hv-card hv-card-3">
+            <img src="fotos/pipoca-algodao-doce.jpeg" alt="Pipoca e Algodão Doce" />
+          </div>
+          <div class="hv-chip hv-chip-1">🎈 6+ <span>produtos</span></div>
+          <div class="hv-chip hv-chip-2">📦 Entrega + montagem</div>
+        </div>
 
       </div>
     </div>
@@ -1261,17 +1277,6 @@
       el.style.transitionDelay = (i % 4) * 80 + 'ms';
       observer.observe(el);
     });
-
-    // Parallax no hero
-    const heroEl = document.querySelector('.hero');
-    window.addEventListener('scroll', () => {
-      if (window.innerWidth > 900) {
-        const s = window.scrollY;
-        if (s < window.innerHeight * 1.2) {
-          heroEl.style.backgroundPositionY = `calc(center + ${s * 0.3}px)`;
-        }
-      }
-    }, { passive: true });
 
     function enviarWhatsapp(e) {
       e.preventDefault();
