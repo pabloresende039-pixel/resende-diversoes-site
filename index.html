@@ -123,79 +123,37 @@
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    /* ── HERO — PAINEL ESQUERDO ── */
-    .hero-left {
-      background: linear-gradient(160deg, #0F172A 0%, #152232 100%);
       display: flex;
       align-items: center;
-      padding: 100px 64px 80px;
       position: relative;
       overflow: hidden;
+      padding: 80px 0;
+      background-image: url('fotos/hero-new.png');
+      background-size: cover;
+      background-position: center center;
     }
 
-    /* brilho azul sutil no canto inferior */
-    .hero-left::after {
-      content: '';
-      position: absolute;
-      bottom: -100px; right: -60px;
-      width: 420px; height: 420px;
-      background: radial-gradient(circle, rgba(14,165,233,.18) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    .hero-left-inner {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 520px;
-    }
-
-    /* ── HERO — PAINEL DIREITO (FOTO) ── */
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-right img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    /* fade suave na borda esquerda pra integrar com o painel escuro */
-    .hero-right::before {
+    /* overlay escuro no lado esquerdo pra legibilidade do texto */
+    .hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, rgba(15,23,42,.4) 0%, transparent 28%);
-      z-index: 1;
+      background: linear-gradient(
+        to right,
+        rgba(10,18,38,0.88) 0%,
+        rgba(10,18,38,0.72) 40%,
+        rgba(10,18,38,0.15) 70%,
+        transparent 100%
+      );
       pointer-events: none;
+      z-index: 0;
     }
+    .hero::after { display: none; }
 
-    /* badges flutuantes sobre a foto */
-    .hero-photo-badge {
-      position: absolute;
-      z-index: 2;
-      background: var(--white);
-      border-radius: 50px;
-      padding: 11px 20px;
-      font-family: 'Nunito', sans-serif;
-      font-weight: 800;
-      font-size: .85rem;
-      color: var(--dark);
-      box-shadow: 0 6px 28px rgba(0,0,0,.22);
-      white-space: nowrap;
-    }
-
-    .hero-photo-badge.blue {
-      background: var(--blue);
-      color: var(--white);
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
     }
 
     /* coluna esquerda */
@@ -724,20 +682,11 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero {
-        grid-template-columns: 1fr;
-        grid-template-rows: 320px auto;
-      }
-      .hero-right { order: -1; }
-      .hero-left {
-        padding: 52px 32px 60px;
-        text-align: center;
-      }
-      .hero-left-inner { max-width: 100%; }
+      .hero { text-align: center; min-height: unset; padding: 70px 0 60px; }
       .hero-btns { justify-content: center; }
       .hero-tags { justify-content: center; }
       .hero-divider { margin: 20px auto; }
-      .hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+      .hero h1 { font-size: clamp(2.4rem, 8vw, 3.2rem); }
     }
     @media (max-width: 768px) {
       nav { display: none; }
@@ -834,10 +783,8 @@
 
   <!-- Hero -->
   <section class="hero">
-
-    <!-- Painel esquerdo: texto -->
-    <div class="hero-left">
-      <div class="hero-left-inner">
+    <div class="container">
+      <div class="hero-inner">
         <div class="hero-badge">📍 Campo Grande, Cariacica — ES</div>
         <h1>
           A festa dos<br>
@@ -864,18 +811,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Painel direito: foto real do produto -->
-    <div class="hero-right">
-      <img src="fotos/pula-pula-305.jpeg" alt="Pula Pula montado em quintal" />
-      <div class="hero-photo-badge blue" style="top:32px; right:28px;">
-        6+ produtos disponíveis
-      </div>
-      <div class="hero-photo-badge" style="bottom:32px; left:28px;">
-        🚚 Entrega + montagem incluída
-      </div>
-    </div>
-
   </section>
 
   <!-- Stats bar -->
